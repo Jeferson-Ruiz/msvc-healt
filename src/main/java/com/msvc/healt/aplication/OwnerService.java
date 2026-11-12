@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.msvc.healt.domain.Email;
 import com.msvc.healt.domain.NormalizedNumber;
 import com.msvc.healt.domain.NormalizedText;
@@ -11,20 +12,24 @@ import com.msvc.healt.domain.exeption.EntityNotFoundException;
 import com.msvc.healt.domain.models.Owner;
 import com.msvc.healt.domain.port.in.OwnerUseCase;
 import com.msvc.healt.domain.port.out.OwnerRepositoryPort;
+import com.msvc.healt.domain.service.OwnerUniquenessValidator;
 
 @Service
+@Transactional
 public class OwnerService implements OwnerUseCase {
 
     private final OwnerRepositoryPort ownerRepositoryPort;
+    private final OwnerUniquenessValidator ownerUniquenessValidator;
 
     public OwnerService(OwnerRepositoryPort ownerRepositoryPort) {
         this.ownerRepositoryPort = ownerRepositoryPort;
+        this.ownerUniquenessValidator = new OwnerUniquenessValidator(ownerRepositoryPort);
     }
 
     @Override
     public Owner create(Owner owner) {
-        validateDocument(owner.getDocumentNumer());
-        validateEmail(owner.getEmail());
+        ownerUniquenessValidator.ensureDocumentNumberIsUnique(owner.getDocumentNumer());
+        ownerUniquenessValidator.ensureEmailIsUnique(owner.getEmail());
         owner.setRegistrationDate(LocalDate.now());
         owner.setPets(owner.getPets());
         return ownerRepositoryPort.save(owner);
@@ -68,7 +73,7 @@ public class OwnerService implements OwnerUseCase {
     @Override
     public void updateEmail(Long id, Email email) {
         Owner owner = findOwnerById(id);
-        validateEmail(email);
+        ownerUniquenessValidator.ensureEmailIsUnique(email);
         owner.setEmail(email);
         ownerRepositoryPort.save(owner);
     }
@@ -94,19 +99,6 @@ public class OwnerService implements OwnerUseCase {
     private Owner findOwnerById(Long id) {
         return ownerRepositoryPort.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(id));
-    }
-
-    private void validateDocument(NormalizedNumber documentNumber) {
-        if (ownerRepositoryPort.existsByDocumentNumer(documentNumber.value())) {
-            throw new IllegalArgumentException();
-        }
-    }
-
-    private void validateEmail(Email email) {
-        if (ownerRepositoryPort.existsByEmail(email.value())) {
-            throw new IllegalArgumentException();
-        }
-
     }
 
 }
