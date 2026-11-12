@@ -7,7 +7,7 @@ public class Pet {
 
     private Long idPet;
     private NormalizedText name;
-    private NormalizedText species;
+    private NormalizedText specie;
     private NormalizedText breed;
     private Sex sex;
     private LocalDate dateBorn;
@@ -17,11 +17,11 @@ public class Pet {
     public Pet() {
     }
 
-    public Pet(Long idPet, NormalizedText name, NormalizedText species, NormalizedText breed, Sex sex,
+    public Pet(Long idPet, NormalizedText name, NormalizedText specie, NormalizedText breed, Sex sex,
             LocalDate dateBorn, Owner owner, LocalDate registrationDate) {
         this.idPet = idPet;
         this.name = name;
-        this.species = species;
+        this.specie = specie;
         this.breed = breed;
         this.sex = sex;
         this.dateBorn = dateBorn;
@@ -45,12 +45,12 @@ public class Pet {
         this.name = name;
     }
 
-    public NormalizedText getSpecies() {
-        return species;
+    public NormalizedText getSpecie() {
+        return specie;
     }
 
     public void setSpecies(NormalizedText species) {
-        this.species = species;
+        this.specie = species;
     }
 
     public NormalizedText getBreed() {
