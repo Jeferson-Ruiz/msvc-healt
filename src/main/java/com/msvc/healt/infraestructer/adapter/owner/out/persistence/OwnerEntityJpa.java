@@ -1,9 +1,15 @@
 package com.msvc.healt.infraestructer.adapter.owner.out.persistence;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+import com.msvc.healt.infraestructer.adapter.pet.out.persistece.PetEntityJpa;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +25,7 @@ import lombok.Setter;
 public class OwnerEntityJpa {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_owner")
     private Long id;
 
@@ -43,7 +50,8 @@ public class OwnerEntityJpa {
     @Column(name = "own_status", nullable = false)
     private boolean status;
 
-    // private Set<PetJpa> pets;
+    @OneToMany(mappedBy = "owner")
+    private Set<PetEntityJpa> pets = new HashSet<>();
 
     @Column(name = "own_registration_date")
     private LocalDate registrationDate;
