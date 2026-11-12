@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OwnerJpaRepository extends JpaRepository<OwnerEntityJpa, Long> {
-    Optional<OwnerEntityJpa> findByDocumentNumber(String number);
+    Optional<OwnerEntityJpa> findByDocumentNumer(String number);
 
     List<OwnerEntityJpa> findByName(String number);
 
