@@ -49,7 +49,7 @@ public class OwnerPersistenceAdapter implements OwnerRepositoryPort {
 
     @Override
     public Optional<Owner> findByDocumentNumber(String number) {
-        return ownerRepository.findByDocumentNumber(number).map(this::toDomain);
+        return ownerRepository.findByDocumentNumer(number).map(this::toDomain);
     }
 
     @Override
