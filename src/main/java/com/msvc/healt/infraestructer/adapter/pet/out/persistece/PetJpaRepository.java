@@ -10,8 +10,6 @@ public interface PetJpaRepository extends JpaRepository<PetEntityJpa, Long> {
 
     List<PetEntityJpa> findBySex(String sex);
 
-    //implementar logica de busqueda por edad
-
     List<PetEntityJpa> findByOwner_DocumentNumer(String document);
 
 }

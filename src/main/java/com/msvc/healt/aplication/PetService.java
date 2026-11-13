@@ -56,7 +56,12 @@ public class PetService implements PetUseCase {
 
     @Override
     public List<Pet> searchAllByAge(int age) {
-        return sortedListByName(petRepositoryPort.findAllByAge(age));
+        if (age < 0) {
+            throw new IllegalArgumentException("La edad no puede ser negativa");
+        }
+        return sortedListByName(petRepositoryPort.findAll().stream()
+                .filter(pet -> pet.getAge() != null && pet.getAge().equals(age))
+                .toList());
     }
 
     @Override

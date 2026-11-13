@@ -18,8 +18,6 @@ public interface PetRepositoryPort {
 
     List<Pet> findAllBySex(String sex);
 
-    List<Pet> findAllByAge(int age);
-
     List<Pet> findByOwnerDocumentNumber(String number);
 
 }

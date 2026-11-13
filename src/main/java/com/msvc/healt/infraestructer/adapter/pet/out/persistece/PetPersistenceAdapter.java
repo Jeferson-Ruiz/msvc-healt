@@ -76,11 +76,6 @@ public class PetPersistenceAdapter implements PetRepositoryPort {
         return mapToDomain(petJpaRepository.findByOwner_DocumentNumer(number));
     }
 
-    @Override
-    public List<Pet> findAllByAge(int age) {
-        return List.of();
-    }
-
     private Pet toDomain(PetEntityJpa jpa) {
         OwnerEntityJpa ownerJpa = jpa.getOwner();
         Owner owner = ownerJpa == null ? null
