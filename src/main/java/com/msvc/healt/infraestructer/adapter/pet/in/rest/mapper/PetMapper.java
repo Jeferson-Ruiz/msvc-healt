@@ -33,6 +33,7 @@ public class PetMapper {
                 pet.getSex(),
                 pet.getDateBorn(),
                 pet.getRegistrationDate(),
+                pet.getAge(),
                 pet.getOwner() == null ? null : OwnerMapper.toDto(pet.getOwner()));
     }
 

@@ -1,6 +1,8 @@
 package com.msvc.healt.domain.models;
 
 import java.time.LocalDate;
+import java.time.Period;
+
 import com.msvc.healt.domain.NormalizedText;
 
 public class Pet {
@@ -91,5 +93,12 @@ public class Pet {
 
     public void setRegistrationDate(LocalDate registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+    public Integer getAge() {
+        if (dateBorn == null) {
+            return null;
+        }
+        return Period.between(dateBorn, LocalDate.now()).getYears();
     }
 }
