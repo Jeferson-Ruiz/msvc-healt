@@ -3,7 +3,6 @@ package com.msvc.healt.domain.port.in;
 import java.time.LocalDate;
 import java.util.List;
 import com.msvc.healt.domain.NormalizedText;
-import com.msvc.healt.domain.models.Owner;
 import com.msvc.healt.domain.models.Pet;
 import com.msvc.healt.domain.models.Sex;
 
@@ -29,5 +28,5 @@ public interface PetUseCase {
 
     void updateDateBorn(Long id, LocalDate born);
 
-    void updateOwner(Owner owner);
+    void updateOwner(Long idPet, String ownerDocumentNumber);
 }
