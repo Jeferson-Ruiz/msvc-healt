@@ -1,6 +1,5 @@
 package com.msvc.healt.infraestructer.adapter.pet.in.rest.mapper;
 
-import com.msvc.healt.domain.Email;
 import com.msvc.healt.domain.NormalizedNumber;
 import com.msvc.healt.domain.NormalizedText;
 import com.msvc.healt.domain.models.Owner;
@@ -16,10 +15,12 @@ public class PetMapper {
         pet.setIdPet(null);
         pet.setName(new NormalizedText(dto.name()));
         pet.setSpecies(new NormalizedText(dto.species()));
-        pet.setBreed(new NormalizedText(dto.breed()));
+        pet.setBreed(dto.breed() == null ? null : new NormalizedText(dto.breed()));
         pet.setSex(dto.sex());
         pet.setDateBorn(dto.dateBorn());
-        pet.setOwner(toOwnerModel(dto.owner()));
+        Owner owner = new Owner();
+        owner.setDocumentNumer(new NormalizedNumber(dto.ownerDocumentNumber()));
+        pet.setOwner(owner);
         pet.setRegistrationDate(null);
         return pet;
     }
@@ -39,22 +40,5 @@ public class PetMapper {
 
     private static String value(NormalizedText text) {
         return text == null ? null : text.value();
-    }
-
-    private static Owner toOwnerModel(PetRequestDto.OwnerDataDto dto) {
-        if (dto == null) {
-            return null;
-        }
-        Owner owner = new Owner();
-        owner.setId(null);
-        owner.setDocumentNumer(new NormalizedNumber(dto.documentNumer()));
-        owner.setDocumentType(dto.documentType());
-        owner.setName(new NormalizedText(dto.name()));
-        owner.setLastName(new NormalizedText(dto.lastName()));
-        owner.setEmail(new Email(dto.email()));
-        owner.setNumberPhone(new NormalizedNumber(dto.numberPhone()));
-        owner.setStatus(true);
-        owner.setRegistrationDate(null);
-        return owner;
     }
 }
