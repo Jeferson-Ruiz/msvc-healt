@@ -1,23 +1,15 @@
 package com.msvc.healt.infraestructer.adapter.pet.in.rest.dto;
 
 import java.time.LocalDate;
-import com.msvc.healt.domain.models.DocumentType;
 import com.msvc.healt.domain.models.Sex;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record PetRequestDto(
-        String name,
-        String species,
+        @NotBlank String name,
+        @NotBlank String species,
         String breed,
-        Sex sex,
-        LocalDate dateBorn,
-        OwnerDataDto owner) {
-
-    public record OwnerDataDto(
-            String documentNumer,
-            DocumentType documentType,
-            String name,
-            String lastName,
-            String email,
-            String numberPhone) {
-    }
+        @NotNull Sex sex,
+        @NotNull LocalDate dateBorn,
+        @NotBlank String ownerDocumentNumber) {
 }
