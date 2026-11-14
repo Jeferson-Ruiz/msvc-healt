@@ -16,10 +16,14 @@ import com.msvc.healt.domain.NormalizedText;
 import com.msvc.healt.domain.models.Pet;
 import com.msvc.healt.domain.models.Sex;
 import com.msvc.healt.domain.port.in.PetUseCase;
+import jakarta.validation.Valid;
 import com.msvc.healt.domain.port.in.RegisterPetUseCase;
+import com.msvc.healt.domain.port.in.RegisterPetWithOwnerUseCase;
 import com.msvc.healt.infraestructer.adapter.pet.in.rest.dto.PetRequestDto;
+import com.msvc.healt.infraestructer.adapter.pet.in.rest.dto.PetWithOwnerRequestDto;
 import com.msvc.healt.infraestructer.adapter.pet.in.rest.dto.PetResponseDto;
 import com.msvc.healt.infraestructer.adapter.pet.in.rest.mapper.PetMapper;
+import com.msvc.healt.infraestructer.adapter.pet.in.rest.mapper.PetWithOwnerMapper;
 
 @RestController
 @RequestMapping("/pet")
@@ -27,15 +31,24 @@ public class PetController {
 
     private final PetUseCase petUseCase;
     private final RegisterPetUseCase registerPetUseCase;
+    private final RegisterPetWithOwnerUseCase registerPetWithOwnerUseCase;
 
-    public PetController(PetUseCase petUseCase, RegisterPetUseCase registerPetUseCase) {
+    public PetController(PetUseCase petUseCase, RegisterPetUseCase registerPetUseCase,
+            RegisterPetWithOwnerUseCase registerPetWithOwnerUseCase) {
         this.petUseCase = petUseCase;
         this.registerPetUseCase = registerPetUseCase;
+        this.registerPetWithOwnerUseCase = registerPetWithOwnerUseCase;
     }
 
     @PostMapping
-    public ResponseEntity<PetResponseDto> register(@RequestBody PetRequestDto petRequestDto) {
+    public ResponseEntity<PetResponseDto> register(@RequestBody @Valid PetRequestDto petRequestDto) {
         Pet pet = registerPetUseCase.create(PetMapper.toModel(petRequestDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(PetMapper.toDto(pet));
+    }
+
+    @PostMapping("/with-owner")
+    public ResponseEntity<PetResponseDto> registerWithOwner(@RequestBody @Valid PetWithOwnerRequestDto petWithOwnerRequestDto) {
+        Pet pet = registerPetWithOwnerUseCase.create(PetWithOwnerMapper.toModel(petWithOwnerRequestDto));
         return ResponseEntity.status(HttpStatus.CREATED).body(PetMapper.toDto(pet));
     }
 
@@ -88,7 +101,7 @@ public class PetController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/update-date-born/{id}")
+    @PatchMapping("/update-owner/{id}")
     public ResponseEntity<Void> updateOwner(@PathVariable("id") Long id, @RequestParam("ownerNumber") String number) {
         petUseCase.updateOwner(id, number);
         return ResponseEntity.noContent().build();
