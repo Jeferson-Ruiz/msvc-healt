@@ -20,4 +20,6 @@ public interface PetRepositoryPort {
 
     List<Pet> findByOwnerDocumentNumber(String number);
 
+    Optional<Pet> findByOwnerDocumentNumberAndName(String documentNumber, String name);
+
 }
