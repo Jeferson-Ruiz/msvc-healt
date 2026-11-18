@@ -2,6 +2,8 @@ package com.msvc.healt.infraestructer.adapter.consultation.out.persistence;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Repository;
 import com.msvc.healt.domain.Email;
 import com.msvc.healt.domain.NormalizedNumber;
@@ -63,6 +65,11 @@ public class ConsultationPersistenceAdapter implements ConsultationRepositoryPor
     @Override
     public List<Consultation> findAll() {
         return mapToDomain(consultationJpaRepository.findAll());
+    }
+
+    @Override
+    public Optional<Consultation> findById(Long id) {
+        return consultationJpaRepository.findById(id).map(this::toDomain);
     }
 
     @Override
@@ -132,4 +139,5 @@ public class ConsultationPersistenceAdapter implements ConsultationRepositoryPor
                 .map(this::toDomain)
                 .toList();
     }
+
 }
